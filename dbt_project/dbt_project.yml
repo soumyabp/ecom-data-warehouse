@@ -1,0 +1,27 @@
+name: ecommerce_warehouse
+version: '1.0.0'
+config-version: 2
+
+profile: ecommerce_warehouse
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  ecommerce_warehouse:
+    +schema: raw
+
+models:
+  ecommerce_warehouse:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: table
+      +schema: marts

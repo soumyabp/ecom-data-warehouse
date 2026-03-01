@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+profiles.yml
+
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
+# Airflow
+airflow/logs/
+airflow/plugins/
+airflow/*.pid
+airflow/*.cfg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Local docs and planning (not part of the project)
+github-projects-plan.md
+LOCAL_PROJECT_DOC.md
+archive.zip
