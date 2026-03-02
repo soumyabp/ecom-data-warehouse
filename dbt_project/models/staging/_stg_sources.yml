@@ -1,0 +1,106 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: Raw e-commerce data loaded from Olist CSV files into DuckDB
+    tables:
+      - name: raw_orders
+        description: Raw order-level data with timestamps and status
+        columns:
+          - name: order_id
+            description: Unique order identifier
+          - name: customer_id
+            description: Foreign key to the customers table
+          - name: order_status
+            description: Order lifecycle status (delivered, shipped, canceled, etc.)
+          - name: order_purchase_timestamp
+            description: Timestamp when the customer placed the order
+          - name: order_approved_at
+            description: Timestamp when payment was approved
+          - name: order_delivered_carrier_date
+            description: Timestamp when the order was handed to the carrier
+          - name: order_delivered_customer_date
+            description: Timestamp when the customer received the order
+          - name: order_estimated_delivery_date
+            description: Estimated delivery date shown to the customer at purchase
+
+      - name: raw_customers
+        description: Customer records with location data
+        columns:
+          - name: customer_id
+            description: Key to the orders table (one per order)
+          - name: customer_unique_id
+            description: Unique identifier for the actual customer (can have multiple customer_ids)
+          - name: customer_zip_code_prefix
+            description: First 5 digits of the customer zip code
+          - name: customer_city
+            description: Customer city name
+          - name: customer_state
+            description: Customer state abbreviation
+
+      - name: raw_order_items
+        description: Line-item level data for each order
+        columns:
+          - name: order_id
+            description: Foreign key to the orders table
+          - name: order_item_id
+            description: Sequential number for items within the same order
+          - name: product_id
+            description: Foreign key to the products table
+          - name: seller_id
+            description: Foreign key to the sellers table
+          - name: shipping_limit_date
+            description: Seller shipping deadline for this item
+          - name: price
+            description: Item price in BRL
+          - name: freight_value
+            description: Freight cost for this item in BRL
+
+      - name: raw_order_payments
+        description: Payment information for each order (can have multiple payment methods)
+        columns:
+          - name: order_id
+            description: Foreign key to the orders table
+          - name: payment_sequential
+            description: Sequence number if the customer used multiple payment methods
+          - name: payment_type
+            description: Payment method (credit_card, boleto, voucher, debit_card)
+          - name: payment_installments
+            description: Number of installments chosen by the customer
+          - name: payment_value
+            description: Transaction value for this payment method in BRL
+
+      - name: raw_products
+        description: Product catalog with physical attributes
+        columns:
+          - name: product_id
+            description: Unique product identifier
+          - name: product_category_name
+            description: Product category in Portuguese
+          - name: product_name_lenght
+            description: Character count of the product name
+          - name: product_description_lenght
+            description: Character count of the product description
+          - name: product_photos_qty
+            description: Number of product photos
+          - name: product_weight_g
+            description: Product weight in grams
+          - name: product_length_cm
+            description: Product length in centimeters
+          - name: product_height_cm
+            description: Product height in centimeters
+          - name: product_width_cm
+            description: Product width in centimeters
+
+      - name: raw_sellers
+        description: Seller records with location data
+        columns:
+          - name: seller_id
+            description: Unique seller identifier
+          - name: seller_zip_code_prefix
+            description: First 5 digits of the seller zip code
+          - name: seller_city
+            description: Seller city name
+          - name: seller_state
+            description: Seller state abbreviation
