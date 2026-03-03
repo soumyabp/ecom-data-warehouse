@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: Cleaned order records with parsed timestamps
+    columns:
+      - name: order_id
+        description: Unique order identifier
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customers
+        tests:
+          - not_null
+      - name: order_status
+        description: Current status of the order
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                - delivered
+                - shipped
+                - canceled
+                - unavailable
+                - invoiced
+                - processing
+                - created
+                - approved
+      - name: order_purchase_at
+        description: Timestamp when the order was placed
+        tests:
+          - not_null
+
+  - name: stg_customers
+    description: Deduplicated customer records with standardized location fields
+    columns:
+      - name: customer_id
+        description: Customer key (one per order)
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: Actual unique customer identifier across orders
+        tests:
+          - not_null
+      - name: customer_state
+        description: Two-letter state abbreviation
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: Product catalog with English category names
+    columns:
+      - name: product_id
+        description: Unique product identifier
+        tests:
+          - unique
+          - not_null
+      - name: product_category_name_en
+        description: Product category translated to English
+
+  - name: stg_order_items
+    description: Line-item level order data with cleaned numeric fields
+    columns:
+      - name: order_id
+        description: Foreign key to orders
+        tests:
+          - not_null
+      - name: order_item_id
+        description: Sequential item number within the order
+        tests:
+          - not_null
+      - name: product_id
+        description: Foreign key to products
+        tests:
+          - not_null
+      - name: price
+        description: Item price in BRL
+        tests:
+          - not_null
+      - name: freight_value
+        description: Freight cost for this item in BRL
+        tests:
+          - not_null
